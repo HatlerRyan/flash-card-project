@@ -3,10 +3,13 @@ import pandas as pd
 import random
 
 
-#----------------read the data-----------------#
+# ----------------read the data-----------------#
+
 french_data = pd.read_csv("data/french_words.csv", )
 french_words_to_learn = french_data.to_dict(orient='records')
 new_word = {}
+
+
 def new_card():
     global new_word, flip_timer
     window.after_cancel(flip_timer)
@@ -18,10 +21,10 @@ def new_card():
     flip_timer = window.after(3000, func=flip_card)
     # print(new_word)
 
+
 def is_known():
     french_words_to_learn.remove(new_word)
     new_card()
-
 
 
 def flip_card():
@@ -31,9 +34,8 @@ def flip_card():
     canvas.itemconfig(next_word_up, text=next_english, fill="white")
 
 
-
-
 # ------------------------UI----------------------------#
+
 
 BACKGROUND_COLOR = "#B1DDC6"
 
@@ -45,7 +47,7 @@ flip_timer = window.after(3000, func=flip_card)
 
 card_back = PhotoImage(file="images/card_back.png")
 card_front = PhotoImage(file="images/card_front.png")
-canvas = Canvas(width=800, height=526, highlightthickness=0, background=BACKGROUND_COLOR )
+canvas = Canvas(width=800, height=526, highlightthickness=0, background=BACKGROUND_COLOR)
 card_side = canvas.create_image(400, 263, image=card_front)
 language_title = canvas.create_text(400, 150, text="Title", font=("arial", 40, "italic"))
 next_word_up = canvas.create_text(400, 263, text="Word", font=("arial", 60, "bold"))
@@ -59,7 +61,5 @@ right_button.grid(column=0, row=2)
 wrong_button.grid(column=1, row=2)
 
 new_card()
-
-
 
 window.mainloop()
