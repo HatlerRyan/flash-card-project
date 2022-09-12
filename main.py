@@ -1,17 +1,26 @@
 from tkinter import *
+
+import pandas
 import pandas as pd
 import random
 
 
 # ----------------read the data-----------------#
+french_words_to_learn = {}
 
-french_data = pd.read_csv("data/french_words.csv", )
-french_words_to_learn = french_data.to_dict(orient='records')
+
 new_word = {}
 
+try:
+    french_data = pd.read_csv("data/words_to_learn.csv")
+except FileNotFoundError:
+    original_data = pandas.read_csv("data/french_words.csv")
+    french_words_to_learn = original_data.to_dict(orient='records')
+else:
+    french_words_to_learn = french_data.to_dict(orient="records")
 
 def new_card():
-    global new_word, flip_timer
+    global new_word, flip_timer, french_words_to_learn
     window.after_cancel(flip_timer)
     canvas.itemconfig(card_side, image=card_front)
     new_word = random.choice(french_words_to_learn)
@@ -24,6 +33,9 @@ def new_card():
 
 def is_known():
     french_words_to_learn.remove(new_word)
+    print(len(french_words_to_learn))
+    data = pandas.DataFrame(french_words_to_learn)
+    data.to_csv("data/words_to_learn.csv", index=False)
     new_card()
 
 
